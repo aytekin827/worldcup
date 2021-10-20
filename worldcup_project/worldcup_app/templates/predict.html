@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}DO Predict!!{% endblock %}
+{% block content %}
+<h2>월드컵 우승국을 예측해 볼 수 있는 페이지입니다 </h2>
+<h3>Group Stage</h3>
+{{ comb[0] }}
+{% for group in result['Group'] |unique %}
+    ___Starting group {{ group }}___
+    {% for combination in comb %}
+        {% for home,away in combination %}
+            {{ home }} vs. {{ away }}: 
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+
+<br>
+<button type="submit" class="btn btn-outline-primary">Predict</button>
+{% endblock %}
