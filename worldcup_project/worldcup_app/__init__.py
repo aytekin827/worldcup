@@ -1,3 +1,4 @@
+from types import DynamicClassAttribute
 from flask import Flask
 import os
 
@@ -10,12 +11,12 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['DEBUG'] = True
 
-    from models import db, migrate
-
+    from worldcup_app.models import db, migrate
+    
     db.init_app(app)
     migrate.init_app(app,db)
 
-    from routes import main_route, info_route, predict_route
+    from worldcup_app.routes import main_route, info_route, predict_route
     app.register_blueprint(main_route.bp)
     app.register_blueprint(info_route.bp)
     app.register_blueprint(predict_route.bp,url_prefix='/api')

@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}DO Predict!!{% endblock %}
 {% block content %}
-<h2>월드컵 우승국을 예측해 볼 수 있는 페이지입니다 </h2>
-<h3>Group Stage</h3>
-{{ comb[0] }}
-{% for group in result['Group'] |unique %}
-    ___Starting group {{ group }}___
-    {% for combination in comb %}
-        {% for home,away in combination %}
-            {{ home }} vs. {{ away }}: 
-        {% endfor %}
+<h3>예측 결과를 볼 수 있는 페이지입니다 </h3>
+<h4> 조별리그 </h4>
+{% for group in keys %}
+<ul class="list-group">
+<li class="list-group-item active">group {{ group }}</li>
+
+    {% for result in result[group] %}
+        <li class="list-group-item">{{result}}</li>
+    {% endfor %}
+</ul>
+<br>
+{% endfor %}
+<h4> 토너먼트 </h4>
+{% for groupstage in finals %}
+<ul class="list-group">
+<li class="list-group-item active"> {{ groupstage }}</li>
+
+    {% for result in single_result_table[groupstage] %}
+        <li class="list-group-item">{{result}}</li>
     {% endfor %}
 {% endfor %}
-
+</ul>
 <br>
-<button type="submit" class="btn btn-outline-primary">Predict</button>
+
 {% endblock %}

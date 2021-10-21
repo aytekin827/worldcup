@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 
-from models import ranking
+from worldcup_app.models import ranking
 bp = Blueprint('info', __name__)
 
 @bp.route('/info')

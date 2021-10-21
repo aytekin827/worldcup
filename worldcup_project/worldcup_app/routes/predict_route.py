@@ -1,7 +1,7 @@
 from itertools import combinations
 from flask import Blueprint, render_template, request
-from models import models,Worldcup2018,rankings_feature
-from views.model_views import logistic_regression,split,simulation_groupstage
+from worldcup_app.models import models,Worldcup2018,rankings_feature
+from worldcup_app.views.model_views import logistic_regression, single_elimination_round,split,simulation_groupstage
 import pandas as pd
 
 bp = Blueprint('predict', __name__)
@@ -47,12 +47,18 @@ def index():
     ])
 
 
-    result = simulation_groupstage(world_cup,rankings,model)
-    comb = []
-    for group in set(world_cup['Group']):
-        comb.append(combinations(world_cup.query('Group == "{}"'.format(group)).index,2))
-
-    return render_template('predict.html',result = result,comb=comb)
+    result_table,keys,world_cup,world_cup_rankings = simulation_groupstage(world_cup,rankings,model)
+    single_result_table,odd,lables,finals = single_elimination_round(world_cup,world_cup_rankings,model)
+    top2 = lambda x: x.sort_values(by='points', ascending=False)[:4] 
+    df = world_cup.groupby(by='Group').apply(top2)
+    return render_template(
+        'predict.html',
+        result = result_table,
+        keys = keys,
+        df=df,
+        single_result_table=single_result_table,
+        finals = finals
+        )
 
 # @bp.route('/predict/model')
 # def index():
